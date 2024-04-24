@@ -1,0 +1,154 @@
+using System;
+
+namespace MuseumAdmissionApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            DetermineAdmission();
+        }
+
+        private static void DetermineAdmission()
+        {
+            string specialGroup = AskQuestion("Are you active military, United states veteran, Illinois teacher, Police officer, Firefighter, parametric, park district employee? (Y/N)");
+            if (specialGroup.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission");
+                return;
+            }
+
+            string astcMember = AskQuestion("Are you a reciprocal member of another museum through American Society of Taxidermists and Conservators (ASTC)? (Y/N)");
+            if (astcMember.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission");
+                return;
+            }
+
+            string ebtMember = AskQuestion("Are you a member of the SNAP or WIC program, otherwise known as EBT for SNAP? and would like a ticket for 3$ (Y/N)");
+            if (ebtMember.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission");
+                return;
+            }
+
+            string c3CityPass = AskQuestion("Did you purchase a C3 city pass? (Y/N)");
+            if (c3CityPass.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission");
+                return;
+            }
+
+            string regularAdmission = AskQuestion("Do you want regular general/basic admission with no special exhibits? (Y/N)");
+            if (regularAdmission.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission");
+                return;
+            }
+
+            // New conditions start here
+            string museumEmployee = AskQuestion("Are you another museum employee? (Y/N)");
+            if (museumEmployee.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission");
+                return;
+            }
+
+            // Check if it's Wednesday and the user has their state ID or some way to prove they're an Illinois resident
+            string dayOfWeek = DateTime.Now.DayOfWeek.ToString();
+            if (dayOfWeek.ToUpper() == "WEDNESDAY")
+            {
+                string illinoisResident = AskQuestion("Do you have your state ID or some way to prove you're an Illinois resident? (Y/N)");
+                if (illinoisResident.ToUpper() == "Y")
+                {
+                    Console.WriteLine("Basic admission");
+                    return;
+                }
+            }
+
+            string cooperateMemberAllExhibits = AskQuestion("Are you a cooperate member and want all special exhibits for 10 dollars? (Y/N)");
+            if (cooperateMemberAllExhibits.ToUpper() == "Y")
+            {
+                Console.WriteLine("Basic admission + Unseen Oceans + Underground Adventure + Bloodsuckers");
+                return;
+            }
+            // New conditions end here
+
+            string goCityPass = AskQuestion("Did you purchase a gocity pass? (Y/N)");
+            if (goCityPass.ToUpper() == "Y")
+            {
+                HandleSpecialExhibitChoice();
+            }
+            else
+            {
+                string cooperateMember = AskQuestion("Are you a cooperate member and would you like to see a special exhibit plus basic admission for 5$? (Y/N)");
+                if (cooperateMember.ToUpper() == "Y")
+                {
+                    HandleSpecialExhibitChoice();
+                }
+                else
+                {
+                    string justForToday = AskQuestion("Are you coming in for just the day and would like just basic admission + one special exhibit? (Y/N)");
+                    if (justForToday.ToUpper() == "Y")
+                    {
+                        HandleSpecialExhibitChoice();
+                    }
+                    else
+                    {
+                        string regularPass = AskQuestion("Did you purchase a regular non c3 city pass (c5)? (Y/N)");
+                        if (regularPass.ToUpper() == "Y")
+                        {
+                            string allExhibits = AskQuestion("Do you want to just see all exhibits in the museum just for today with an All access pass? (Y/N)");
+                            if (allExhibits.ToUpper() == "Y")
+                            {
+                                Console.WriteLine("Basic admission + Unseen Oceans + Underground Adventure + Bloodsuckers");
+                                return;
+                            }
+                        }
+
+                        string fieldMuseumMember = AskQuestion("Are you a member of the Field Museum? (Y/N)");
+                        if (fieldMuseumMember.ToUpper() == "Y")
+                        {
+                            Console.WriteLine("Basic admission + Unseen Oceans + Underground Adventure + Bloodsuckers");
+                            return;
+                        }
+
+                        // Handle other cases or additional questions
+                        Console.WriteLine("Please contact the museum for more information.");
+                    }
+                }
+            }
+        }
+
+        private static void HandleSpecialExhibitChoice()
+        {
+            Console.WriteLine("Which special exhibit would you like to see?");
+            Console.WriteLine("1. Unseen Oceans");
+            Console.WriteLine("2. Underground Adventure");
+            Console.WriteLine("3. Bloodsuckers");
+            string specialExhibitChoice = AskQuestion("Enter the number of your choice:");
+
+            switch (specialExhibitChoice)
+            {
+                case "1":
+                    Console.WriteLine("Basic admission + Unseen Oceans");
+                    break;
+                case "2":
+                    Console.WriteLine("Basic admission + Underground Adventure");
+                    break;
+                case "3":
+                    Console.WriteLine("Basic admission + Bloodsuckers");
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+
+        private static string AskQuestion(string question)
+        {
+            Console.WriteLine(question);
+            return Console.ReadLine();
+        }
+    }
+}
